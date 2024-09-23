@@ -1,4 +1,4 @@
-import { Wraker } from "wraker";
+import { Wraker } from "@wraker/core";
 import { useEffect } from "react";
 
 const worker = new Worker(new URL("./worker.js", import.meta.url), {

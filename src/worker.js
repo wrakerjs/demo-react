@@ -1,4 +1,4 @@
-import { WrakerApp } from "wraker";
+import { WrakerApp } from "@wraker/core";
 
 const app = new WrakerApp();
 
