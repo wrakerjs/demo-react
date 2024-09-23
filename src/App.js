@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { Wraker } from "wraker";
+import { useEffect } from "react";
+
+const worker = new Worker(new URL("./worker.js", import.meta.url), {
+  name: "my-worker",
+  type: "module",
+});
 
 function App() {
+  useEffect(() => {
+    const wraker = Wraker.fromWorker(worker);
+
+    wraker.fetch("/hello").then((response) => {
+      if (response.error) {
+        document.getElementById("error").textContent = response.error;
+      } else {
+        document.getElementById("data").textContent = response.body;
+      }
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <style scoped>
+        {`
+        p {
+          font-size: 2rem;
+        }
+
+        #data {
+          color: green;
+        }
+
+        #error {
+          color: red;
+        }
+        `}
+      </style>
+
+      <p id="data"></p>
+      <p id="error"></p>
     </div>
   );
 }
